@@ -19,17 +19,16 @@ class HBNBCommand(cmd.Cmd):
     """
     prompt = "(hbnb) "
     dict_classes = {"BaseModel": BaseModel}
+    dict_classes = {"BaseModel": BaseModel, "User": User, "Amenity": Amenity,
+                 "City": City, "Place": Place,
+                 "Review": Review, "State": State}
 
     def do_quit(self, args):
-        """
-        Quit command to exit the program
-        """
+        """Quit command to exit the program"""
         return True
 
     def do_EOF(self, args):
-        """
-        Command to exit the program
-        """
+        """Exit program at End Of File (EOF)"""
         print()
         return True
 
@@ -37,9 +36,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """
-        Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id.
-        """
+        """Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id."""
         args = [txt.strip() for txt in args.split()]
         if args == '' or args in None:
             print('** class name missing **')
@@ -50,51 +47,85 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
-    def do_update(self, args):
-        """
-        Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file).
-        """
-        args = [txt.strip() for txt in args.split()]
+    def emptyline(self):
+        """Empty line + ENTER shouldn’t execute anything """
+        pass
 
-        """If the class name is missing"""
+    def do_show(self, args):
+        """Prints the string representation of an instance
+based on the class name and id.
+
+Usage: show <classname> <uuid>"""
+        args = [txt.strip() for txt in args.split()]
         if not args:
             print("** class name missing **")
-
-        """ If the class doesnt exist"""
         elif args[0] not in HBNBCommand.dict_classes.keys():
             print("** class doesn't exist **")
-
-        """If the id is missing"""
         elif len(args) == 1:
             print("** instance id missing **")
+        elif "{}.{}".format(args[0], args[1]) not in storage.all():
+            print("** no instance found **")
+        else:
+            print(storage.all()["{}.{}".format(args[0], args[1])])
 
-        """If the instance of the class name doesn’t exist for the id"""
+    def do_destroy(self, args):
+        """Deletes an instance based on the class name and id
+(save the change into the JSON file)
+
+Usage: destroy <classname> <uuid>"""
+        args = [txt.strip() for txt in args.split()]
+        if not args:
+            print("** class name missing **")
+        elif args[0] not in HBNBCommand.dict_classes.keys():
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+        elif "{}.{}".format(args[0], args[1]) not in storage.all():
+            print("** no instance found **")
+        else:
+            del storage.all()["{}.{}".format(args[0], args[1])]
+            storage.save()
+
+    def do_all(self, args):
+        """Prints all string representation of all instances
+based or not on the class name
+
+Usage: all <classname>
+       or just the command without <classname>: all"""
+        if not args:
+            for val in storage.all().values():
+                print(val)
+        elif args not in HBNBCommand.dict_classes.keys():
+                print("** class doesn't exist **")
+        else:
+            for key, val in storage.all().items():
+                if args in key:
+                    print(val)
+
+    def do_update(self, args):
+        """Updates an instance based on the class name and id by adding
+or updating attribute (save the change into the JSON file)
+
+Usage: update <classname> <uuid> <attribute> <value>"""
+        args = [txt.strip() for txt in args.split()]
+        if not args:
+            print("** class name missing **")
+        elif args[0] not in HBNBCommand.dict_classes.keys():
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
         elif len(args) == 2:
-            """If the instance of the class name doesn’t exist for the id"""
-            if "{}.{}".format(args[0], args[1]):
+            if "{}.{}".format(args[0], args[1]) not in storage.all():
                 print("** no instance found **")
-            """If the attribute name is missing"""
             else:
                 print("** attribute name missing **")
-
-        """If the value for the attribute name doesn’t exist"""
         elif len(args) == 3:
-            print("** value missing **")
-
+                print("** value missing **")
         else:
             if "{}.{}".format(args[0], args[1]) in storage.all():
-                setattr(storage.all()["{}.{}".format(args[0], args[1])], args[2], args[3])
+                setattr(storage.all()["{}.{}".format(args[0], args[1])],
+                        args[2], args[3])
                 storage.save()
-
-        #All other arguments should not be used
-        #id, created_at and updated_at cant’ be updated. You can assume they won’t be passed in the update command
-        #Only “simple” arguments can be updated: string, integer and float. You can assume nobody will try to update list of ids or datetime
-#Let’s add some rules:
-
-#You can assume arguments are always in the right order
-###Each arguments are separated by a space
-###A string argument with a space must be between double quote
-###The error management starts from the first argument to the last one
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
