@@ -38,14 +38,14 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id."""
         args = [txt.strip() for txt in args.split()]
-        if args == '' or args in None:
-            print('** class name missing **')
-        elif args[0] in my_list:
+        if not args:
+            print("** class name missing **")
+        elif args[0] not in HBNBCommand.dict_classes.keys():
+            print("** class doesn't exist **")
+        else:
             new = eval(args[0])(args[1:])
             print(new.id)
             new.save()
-        else:
-            print("** class doesn't exist **")
 
     def emptyline(self):
         """Empty line + ENTER shouldn’t execute anything """
