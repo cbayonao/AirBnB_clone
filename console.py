@@ -20,8 +20,8 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     dict_classes = {"BaseModel": BaseModel}
     dict_classes = {"BaseModel": BaseModel, "User": User, "Amenity": Amenity,
-                 "City": City, "Place": Place,
-                 "Review": Review, "State": State}
+                    "City": City, "Place": Place,
+                    "Review": Review, "State": State}
 
     def do_quit(self, args):
         """Quit command to exit the program"""
@@ -54,7 +54,6 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, args):
         """Prints the string representation of an instance
 based on the class name and id.
-
 Usage: show <classname> <uuid>"""
         args = [txt.strip() for txt in args.split()]
         if not args:
@@ -96,7 +95,7 @@ Usage: all <classname>
             for val in storage.all().values():
                 print(val)
         elif args not in HBNBCommand.dict_classes.keys():
-                print("** class doesn't exist **")
+            print("** class doesn't exist **")
         else:
             for key, val in storage.all().items():
                 if args in key:
@@ -120,12 +119,13 @@ Usage: update <classname> <uuid> <attribute> <value>"""
             else:
                 print("** attribute name missing **")
         elif len(args) == 3:
-                print("** value missing **")
+            print("** value missing **")
         else:
             if "{}.{}".format(args[0], args[1]) in storage.all():
                 setattr(storage.all()["{}.{}".format(args[0], args[1])],
                         args[2], args[3])
                 storage.save()
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
