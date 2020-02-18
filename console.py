@@ -33,6 +33,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def emptyline(self):
+        """Shouldn’t execute anything"""
         pass
 
     def do_create(self, args):
@@ -70,9 +71,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, args):
         """Deletes an instance based on the class name and id
-(save the change into the JSON file)
+        (save the change into the JSON file)
 
-Usage: destroy <classname> <uuid>"""
+        Usage: destroy <classname> <uuid>"""
         args = [txt.strip() for txt in args.split()]
         if not args:
             print("** class name missing **")
@@ -88,10 +89,10 @@ Usage: destroy <classname> <uuid>"""
 
     def do_all(self, args):
         """Prints all string representation of all instances
-based or not on the class name
+        based or not on the class name
 
-Usage: all <classname>
-       or just the command without <classname>: all"""
+        Usage: all <classname>
+        or just the command without <classname>: all"""
         if not args:
             for val in storage.all().values():
                 print(val)
@@ -104,9 +105,9 @@ Usage: all <classname>
 
     def do_update(self, args):
         """Updates an instance based on the class name and id by adding
-or updating attribute (save the change into the JSON file)
+        or updating attribute (save the change into the JSON file)
 
-Usage: update <classname> <uuid> <attribute> <value>"""
+        Usage: update <classname> <uuid> <attribute> <value>"""
         args = [txt.strip() for txt in args.split()]
         if not args:
             print("** class name missing **")
