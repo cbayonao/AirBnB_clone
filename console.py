@@ -49,10 +49,6 @@ class HBNBCommand(cmd.Cmd):
             print(new.id)
             new.save()
 
-    def emptyline(self):
-        """Empty line + ENTER shouldn’t execute anything """
-        pass
-
     def do_show(self, args):
         """Prints the string representation of an instance
         based on the class name and id.
