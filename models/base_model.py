@@ -5,7 +5,6 @@ BaseModel that defines all common attributes/methods for other classes
 from datetime import datetime
 from models import storage
 import uuid
-from models import storage
 
 
 class BaseModel:
