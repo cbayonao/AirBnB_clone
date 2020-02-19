@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """ test FileStorage """
 import unittest
 import os
@@ -38,8 +38,7 @@ class Test_FileStorage(unittest.TestCase):
         """ Tests pep8 style """
         style = pep8.StyleGuide(quiet=True)
         result = style.check_files(['models/engine/file_storage.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
+        self.assertEqual(result.total_errors, 0, "fix pep8")
 
     def test_All(self):
         """ test all """
