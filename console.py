@@ -10,6 +10,7 @@ from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
+from datetime import datetime
 import cmd
 
 
@@ -18,27 +19,28 @@ class HBNBCommand(cmd.Cmd):
     Entry point of the command interpreter
     """
     prompt = "(hbnb) "
-    dict_classes = {"BaseModel": BaseModel}
     dict_classes = {"BaseModel": BaseModel, "User": User, "Amenity": Amenity,
                     "City": City, "Place": Place,
                     "Review": Review, "State": State}
 
     def do_quit(self, args):
-        """Quit command to exit the program"""
+        """Quit command to exit the program
+        """
         return True
 
     def do_EOF(self, args):
-        """Exit program at End Of File (EOF)"""
-        print()
+        """Exit program at End Of File (EOF)
+        """
         return True
 
     def emptyline(self):
-        """Shouldn’t execute anything"""
+        """Empty line + ENTER shouldn’t execute anything
+        """
         pass
 
     def do_create(self, args):
-        """Creates a new instance of BaseModel, saves it
-        (to the JSON file) and prints the id."""
+        """Creates a new instance of BaseModel, saves it (to the JSON file)
+and prints the id."""
         args = [txt.strip() for txt in args.split()]
         if not args:
             print("** class name missing **")
@@ -49,14 +51,12 @@ class HBNBCommand(cmd.Cmd):
             print(new.id)
             new.save()
 
-    def emptyline(self):
-        """Empty line + ENTER shouldn’t execute anything """
-        pass
-
     def do_show(self, args):
         """Prints the string representation of an instance
-        based on the class name and id.
-        Usage: show <classname> <uuid>"""
+based on the class name and id.
+
+Usage: show <classname> <uuid>
+        """
         args = [txt.strip() for txt in args.split()]
         if not args:
             print("** class name missing **")
@@ -71,9 +71,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, args):
         """Deletes an instance based on the class name and id
-        (save the change into the JSON file)
+(save the change into the JSON file)
 
-        Usage: destroy <classname> <uuid>"""
+Usage: destroy <classname> <uuid>
+        """
         args = [txt.strip() for txt in args.split()]
         if not args:
             print("** class name missing **")
@@ -89,10 +90,11 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """Prints all string representation of all instances
-        based or not on the class name
+based or not on the class name
 
-        Usage: all <classname>
-        or just the command without <classname>: all"""
+Usage: all <classname>
+       or just the command without <classname>: all
+"""
         if not args:
             for val in storage.all().values():
                 print(val)
@@ -105,9 +107,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, args):
         """Updates an instance based on the class name and id by adding
-        or updating attribute (save the change into the JSON file)
+or updating attribute (save the change into the JSON file)
 
-        Usage: update <classname> <uuid> <attribute> <value>"""
+Usage: update <classname> <uuid> <attribute> <value>
+        """
         args = [txt.strip() for txt in args.split()]
         if not args:
             print("** class name missing **")
@@ -127,6 +130,8 @@ class HBNBCommand(cmd.Cmd):
                 setattr(storage.all()["{}.{}".format(args[0], args[1])],
                         args[2], args[3])
                 storage.save()
+            else:
+                print("** no instance found **")
 
 
 if __name__ == "__main__":
