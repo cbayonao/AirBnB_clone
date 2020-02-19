@@ -4,6 +4,8 @@ import unittest
 import os
 import pep8
 import json
+import models
+from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models.engine import file_storage
 from models.user import User
@@ -41,6 +43,23 @@ class Test_FileStorage(unittest.TestCase):
         style = pep8.StyleGuide(quiet=True)
         result = style.check_files(['models/engine/file_storage.py'])
         self.assertEqual(result.total_errors, 0, "fix pep8")
+
+    def test_path(self):
+        """ Tests JSON path """
+        self.assertTrue(os.path.exists('file.json'))
+
+    def test_errs(self):
+        """ Test Errors """
+        with self.assertRaises(AttributeError):
+            FileStorage.__objects
+            FileStorage.__File_path
+
+        with self.assertRaises(TypeError):
+            models.storage.new()
+            models.storage.new(self, BaseModel())
+            models.save(BaseModel())
+            models.reload(BaseModel())
+            models.all(BaseModel())
 
     def test_All(self):
         """ test all """

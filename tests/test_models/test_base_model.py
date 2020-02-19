@@ -47,7 +47,7 @@ class Test_Base(unittest.TestCase):
         self.assertEqual(hasattr(self.base_mod, "updated_at"), True)
 
     def test_init(self):
-        """ test __init__ """
+        """ Test __init__ """
         self.assertTrue(isinstance(self.base_mod, BaseModel))
 
     def test_save(self):
