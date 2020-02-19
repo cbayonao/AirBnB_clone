@@ -18,6 +18,7 @@ class Test_FileStorage(unittest.TestCase):
     """ test class """
     @classmethod
     def setUpClass(class_test):
+        """ setup """
         class_test.usr = User()
         class_test.usr.first_name = "Joe"
         class_test.usr.last_name = "Black"
@@ -26,6 +27,7 @@ class Test_FileStorage(unittest.TestCase):
 
     @classmethod
     def deleteclass(class_test):
+        """ delete """
         del class_test.usr
 
     def deleteclass_test(self):
@@ -35,7 +37,7 @@ class Test_FileStorage(unittest.TestCase):
             pass
 
     def test_StyleCheck(self):
-        """ Tests pep8 style """
+        """ Tests pep8 """
         style = pep8.StyleGuide(quiet=True)
         result = style.check_files(['models/engine/file_storage.py'])
         self.assertEqual(result.total_errors, 0, "fix pep8")
@@ -66,24 +68,18 @@ class Test_FileStorage(unittest.TestCase):
         path_f = os.path.join(path_inf, "file.json")
         with open(path_f, "r") as f:
             ln = f.readlines()
-
         try:
             os.remove(path_f)
         except BaseException:
             pass
-
         self.storage.save()
-
         with open(path_f, "r") as f:
             ln2 = f.readlines()
-
         self.assertEqual(ln, ln2)
-
         try:
             os.remove(pt)
         except BaseException:
             pass
-
         with open(path_f, "w") as f:
             f.write("{}")
         with open(path_f, "r") as r:
