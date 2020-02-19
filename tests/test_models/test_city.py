@@ -10,15 +10,15 @@ from models.city import City
 class Test_City(unittest.TestCase):
     """ Test City """
     @classmethod
-    """ setup """
     def setUpClass(clase):
+        """ setup """
         clase.chk_city = City()
         clase.chk_city.name = "Orlando"
         clase.chk_city.state_id = "FL"
 
     @classmethod
-    """ delete """
     def deleteClase(clase):
+        """ delete """
         del clase.chk_city
         try:
             os.remove("file.json")
