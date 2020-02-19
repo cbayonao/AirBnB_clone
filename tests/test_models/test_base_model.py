@@ -33,12 +33,6 @@ class TestBaseModel(unittest.TestCase):
         self.bm_test1.save()
         save_b = self.bm_test2.updated_at
         self.assertFalse(save_a == save_b)
-        
-#    def test_to_dict(self):
-#        bm_dict = self.basem.to_dict()
-#        self.assertTrue(bm_dict.get("__class__"))
-#        self.assertTrue(type(bm_dict) is dict)
-#        self.assertTrue("to_dict" in dir(self.basem))
 
     def test_to_dict(self):
         """test to_dict"""
