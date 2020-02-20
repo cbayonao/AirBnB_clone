@@ -13,7 +13,7 @@ In this project we build a console to be able to manage the objects of our proje
 #### This is the console.
 ![Image of HBnB Clone](https://github.com/cbayonao/AirBnB_clone/blob/master/consolo_diagram.png?raw=true)
 ## HBNB CONSOLE
-Yhe console is lika a shell but, limited to a specific use-case. In our case, we want to be able to manage the objects of our project:
+The console is lika a shell but, limited to a specific use-case. In our case, we want to be able to manage the objects of our project:
 
 Create a new object (ex: a new User or a new Place)
 Retrieve an object from a file, a database etc…
