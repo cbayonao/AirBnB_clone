@@ -18,14 +18,30 @@ class HBNBCommand(cmd.Cmd):
     Entry point of the command interpreter
     """
     prompt = "(hbnb) "
-    dict_classes = {"BaseModel": BaseModel, "User": User, "Amenity": Amenity,
+    dict_classes = {"BaseModel": BaseModel,
+                    "User": User, "Amenity": Amenity,
                     "City": City, "Place": Place,
                     "Review": Review, "State": State}
 
     def default(self, args):
+        """Function to retrieve all instances of a
+        class by using: <class name>.all()"""
         com = args.split(".")
-        if com[1] == 'all()':
-            return self.do_all(com[0])
+        if len(com) > 1:
+            if com[1].startswith('all()'):
+                return self.do_all(com[0])
+            if com[1].startswith('count()'):
+                sum = 0
+                milist = storage.all()
+                for keys in milist.keys():
+                    if keys.split(".")[0] == com[0]:
+                        sum += 1
+                print(sum)
+        else:
+            cmd.Cmd.default(self, args)
+
+
+
 
     def do_quit(self, args):
         """Quit command to exit the program
@@ -105,8 +121,9 @@ Usage: all <classname>
         elif args not in HBNBCommand.dict_classes.keys():
             print("** class doesn't exist **")
         else:
+
             for key, val in storage.all().items():
-                if args in key:
+                if args == key.split(".")[0]:
                     print(val)
 
     def do_update(self, args):
