@@ -24,7 +24,7 @@ Destroy an object
 
 ## How to start it
 ```
-# We will clone the repo locally
+# We will clone the repo locally and move inside
 git clone https://github.com/cbayonao/AirBnB_clone.git && cd AirBnB_clone
 # Now we will execute it
 ./console.py
