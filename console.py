@@ -34,9 +34,11 @@ class HBNBCommand(cmd.Cmd):
                 sum = 0
                 milist = storage.all()
                 for keys in milist.keys():
-                    if keys.split(".")[0] == com[0]:
+                    if keys.split('.')[0] == com[0]:
                         sum += 1
                 print(sum)
+            if com[1].startswith('show()'):
+
         else:
             cmd.Cmd.default(self, args)
 
