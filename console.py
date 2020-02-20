@@ -22,6 +22,11 @@ class HBNBCommand(cmd.Cmd):
                     "City": City, "Place": Place,
                     "Review": Review, "State": State}
 
+    def default(self, args):
+        com = args.split(".")
+        if com[1] == 'all()':
+            return self.do_all(com[0])
+
     def do_quit(self, args):
         """Quit command to exit the program
         """
