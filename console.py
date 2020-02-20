@@ -38,7 +38,11 @@ class HBNBCommand(cmd.Cmd):
                         sum += 1
                 print(sum)
             if com[1].startswith('show()'):
-
+                return self.do_show()
+                pass
+            if com[1].startswith('destroy()'):
+                return self.do_destroy()
+                pass
         else:
             cmd.Cmd.default(self, args)
 
