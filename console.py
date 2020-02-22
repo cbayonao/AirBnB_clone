@@ -46,9 +46,6 @@ class HBNBCommand(cmd.Cmd):
         else:
             cmd.Cmd.default(self, args)
 
-
-
-
     def do_quit(self, args):
         """Quit command to exit the program
         """
