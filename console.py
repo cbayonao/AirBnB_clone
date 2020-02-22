@@ -3,13 +3,14 @@
 Entry point of the command interpreter
 """
 from models.base_model import BaseModel
-from models import storage
+from models import storage, classes
 from models.user import User
 from models.amenity import Amenity
 from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
+from datetime import datetime
 import cmd
 
 
@@ -18,33 +19,8 @@ class HBNBCommand(cmd.Cmd):
     Entry point of the command interpreter
     """
     prompt = "(hbnb) "
-    dict_classes = {"BaseModel": BaseModel,
-                    "User": User, "Amenity": Amenity,
-                    "City": City, "Place": Place,
-                    "Review": Review, "State": State}
-
-    def default(self, args):
-        """Function to retrieve all instances of a
-        class by using: <class name>.all()"""
-        com = args.split(".")
-        if len(com) > 1:
-            if com[1].startswith('all()'):
-                return self.do_all(com[0])
-            if com[1].startswith('count()'):
-                sum = 0
-                milist = storage.all()
-                for keys in milist.keys():
-                    if keys.split('.')[0] == com[0]:
-                        sum += 1
-                print(sum)
-            if com[1].startswith('show()'):
-                return self.do_show()
-                pass
-            if com[1].startswith('destroy()'):
-                return self.do_destroy()
-                pass
-        else:
-            cmd.Cmd.default(self, args)
+    dict_classes = classes
+    __flag = 0
 
     def do_quit(self, args):
         """Quit command to exit the program
@@ -118,16 +94,38 @@ based or not on the class name
 Usage: all <classname>
        or just the command without <classname>: all
 """
+        obj_list = []
         if not args:
-            for val in storage.all().values():
-                print(val)
+            if HBNBCommand.__flag == 0:
+                print("[\"" + "\", \"".join(["{}".format(val) for val in
+                                            storage.all()
+                                            .values()]), end="\"]\n")
+            else:
+                print("[" + ", ".join(["{}".format(val) for val in
+                                       storage.all().values()]), end="]\n")
         elif args not in HBNBCommand.dict_classes.keys():
             print("** class doesn't exist **")
         else:
+            if HBNBCommand.__flag == 0:
+                print("[\"" + "\", \"".join(["{}".format(val) for key, val in
+                                            storage.all().items() if args
+                                            in key]), end="\"]\n")
+            else:
+                print("[" + ", ".join(["{}".format(val) for key, val in
+                                      storage.all().items() if args
+                                      in key]), end="]\n")
+                HBNBCommand.__flag = 0
 
-            for key, val in storage.all().items():
-                if args == key.split(".")[0]:
-                    print(val)
+    def update_from_dict(self, dprm, tokens, msk, objects):
+        obj_dic = self.build_dict(dprm)
+        classes = self.up_clases
+        if tokens[0] in classes:
+            if msk in objects:
+                obj = objects[msk]
+                for k, v in obj_dic.items():
+                    setattr(obj, k, v)
+                obj.updated_at = datetime.now()
+                storage.save()
 
     def do_update(self, args):
         """Updates an instance based on the class name and id by adding
@@ -135,7 +133,9 @@ or updating attribute (save the change into the JSON file)
 
 Usage: update <classname> <uuid> <attribute> <value>
         """
+        args = (args.replace('"', ""))
         args = [txt.strip() for txt in args.split()]
+        print(len(args))
         if not args:
             print("** class name missing **")
         elif args[0] not in HBNBCommand.dict_classes.keys():
@@ -149,13 +149,44 @@ Usage: update <classname> <uuid> <attribute> <value>
                 print("** attribute name missing **")
         elif len(args) == 3:
             print("** value missing **")
+        elif "{}.{}".format(args[0], args[1]) in storage.all():
+            setattr(storage.all()["{}.{}".format(args[0], args[1])],
+                    args[2], args[3])
+            storage.all()[args[0]+"."+args[1]].updated_at = datetime.now()
+            storage.save()
         else:
-            if "{}.{}".format(args[0], args[1]) in storage.all():
-                setattr(storage.all()["{}.{}".format(args[0], args[1])],
-                        args[2], args[3])
-                storage.save()
+            print("** no instance found **")
+
+    def default(self, args):
+        """
+            Catches all the function names that are not expicitly defined.
+        """
+        functions = {"all": self.do_all, "show": self.do_show,
+                     "destroy": self.do_destroy, "update": self.do_update}
+        args = (args.replace("(", ".").replace(")", ".")
+                .replace('"', "").replace(",", "").replace("{", "")
+                .replace("}", "").replace("'", "").replace(":", "")
+                .split("."))
+        print(args)
+        try:
+            if args[1].startswith("count"):
+                sum = 0
+                milist = storage.all()
+                for keys in milist.keys():
+                    if keys.split('.')[0] == args[0]:
+                        sum += 1
+                print(sum)
+            elif args[2]:
+                command_args = args[0] + " " + args[2]
+                func = functions[args[1]]
+                func(command_args)
             else:
-                print("** no instance found **")
+                HBNBCommand.__flag = 1
+                command_args = args[0]
+                func = functions[args[1]]
+                func(command_args)
+        except:
+            print("*** Unknown syntax:", args[0])
 
 
 if __name__ == "__main__":
