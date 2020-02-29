@@ -63,7 +63,6 @@ h4 {
     border: #DDDDDD solid 1px;
     border-radius: 4px;
     display: none;
-    /* position: absolute; */
     width: 100%;
     border: #DDDDDD solid 1px;
     border-radius: 4px;
@@ -83,6 +82,7 @@ ul {
     list-style-type: none;
     text-align: start;
     padding-left: 20px;
+    padding-top: 100px;
 }
 
 .popover li h2 {
@@ -94,7 +94,7 @@ ul {
 }
 
 .popover li p {
-    margin-top: 35px;
+    margin-top: 30px;
     margin-bottom: 30px;
 }
 
