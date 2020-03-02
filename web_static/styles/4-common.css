@@ -17,3 +17,10 @@ body {
     height: 250%;
     margin-bottom: 30px;
 }
+
+h2 {
+    align-items: center;
+    align-self: auto;
+    align-content: center;
+    vertical-align: middle;
+}
