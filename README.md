@@ -182,5 +182,5 @@ These are the objects that you can manipulate with the console
 ### Authors
 ---
 ## Collaborators
-[John Alexander Urrego Sandoval](https://github.com/mateo-a)
-[Camilo Bayona Orduz](https://www.bayona.me/)
+#### [John Alexander Urrego Sandoval](https://github.com/mateo-a) :man:
+#### [Camilo Bayona Orduz](https://www.bayona.me/) :neckbeard:
